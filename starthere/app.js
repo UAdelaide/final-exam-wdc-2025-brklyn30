@@ -50,6 +50,7 @@ let db;
         owner_username VARCHAR(255)
       )
     `);
+    
 
 
     // Insert data if table is empty
