@@ -54,6 +54,8 @@ let db;
         ('danwalker', 'dan@example.com', 'passdan', 'walker'),
         ('eveowner', 'eve@example.com', 'passeve', 'owner')
       `);
+
+      
     }
   } catch (err) {
     console.error('Error setting up database. Ensure Mysql is running: service mysql start', err);
