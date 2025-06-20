@@ -19,6 +19,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/:id/apply', async (req, res) => {
+  const requestId = req.params.id;
+  const { walker_id } = req.body;
+  console.log('APPLY payload →', { requestId, walker_id });  // should show a number
+
+  try {
+    await db.query(
+      `INSERT INTO WalkApplications (request_id, walker_id) VALUES (?, ?)`,
+      [requestId, walker_id]
+    );
+    await db.query(
+      `UPDATE WalkRequests SET status = 'accepted' WHERE request_id = ?`,
+      [requestId]
+    );
+    res.status(201).json({ message: 'Application submitted' });
+  } catch (error) {
+    console.error('SQL Error:', error);
+    res.status(500).json({ error: 'Failed to apply for walk' });
+  }
+});
+
+
 
 // POST a new walk request (from owner)
 router.post('/', async (req, res) => {
