@@ -32,43 +32,40 @@ app.use('/api/dogs', dogRoutes);
 
 // Login route to authenticate user and start session
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body;
 
-  try {
-    
-const [rows] = await db.query('SELECT user_id, username, password_hash, role FROM Users WHERE username = ?', [username]);
+  try {
+    const [rows] = await db.query('SELECT user_id, username, password_hash, role FROM Users WHERE username = ?', [username]);
 
+    if (rows.length === 0) {
+      return res.status(401).send('Invalid credentials');
+    }
 
-    if (rows.length === 0) {
-      return res.status(401).send('Invalid credentials');
-    }
+    const user = rows[0];
 
+    // ✅ Compare hashed password using bcrypt
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).send('Invalid credentials');
+    }
 
-    const user = rows[0];
+    // Start session
+    req.session.user = {
+      user_id: user.user_id,
+      username: user.username,
+      role: user.role
+    };
 
-
-    // Simple plain-text password check:
-    if (user.password_hash !== password) {
-      return res.status(401).send('Invalid credentials');
-    }
-
-
-    req.session.user = {
-      user_id: user.user_id,
-      username: user.username,
-      role: user.role
-    };
-
-
-    if (user.role === 'owner') {
-      return res.redirect('/owner-dashboard.html');
-    } else {
-      return res.redirect('/walker-dashboard.html');
-    }
-  } catch (error) {
-    console.error('Login DB error:', error);
-    return res.status(500).send('Internal Server Error');
-  }
+    // Redirect to dashboard
+    if (user.role === 'owner') {
+      return res.redirect('/owner-dashboard.html');
+    } else {
+      return res.redirect('/walker-dashboard.html');
+    }
+  } catch (error) {
+    console.error('Login DB error:', error);
+    return res.status(500).send('Internal Server Error');
+  }
 });
 
 //logout session
