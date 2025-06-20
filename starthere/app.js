@@ -43,58 +43,89 @@ let db;
     //   )
     // `);
 
+    await db.execute(`CREATE TABLE IF NOT EXISTS Walkers (walker_username VARCHAR(255) PRIMARY KEY)`);
+
     await db.execute(`
       CREATE TABLE IF NOT EXISTS Dogs (
-        dog_name VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
+        dog_id INT AUTO_INCREMENT PRIMARY KEY,
+        dog_name VARCHAR(255),
         size VARCHAR(255),
         owner_username VARCHAR(255)
       )
     `);
+
     await db.execute(`
       CREATE TABLE IF NOT EXISTS WalkRequests (
         request_id INT AUTO_INCREMENT PRIMARY KEY,
-        dog_name VARCHAR(255)x,
-        owner_username VARCHAR(255)
+        dog_name VARCHAR(255),
+        requested_time DATETIME,
+        duration_minutes INT,
+        location VARCHAR(255),
+        owner_username VARCHAR(255),
+        walker_username VARCHAR(255),
+        status VARCHAR(50)
       )
     `);
 
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS WalkRatings (
+        rating_id INT AUTO_INCREMENT PRIMARY KEY,
+        walker_username VARCHAR(255),
+        rating INT,
+        request_id INT
+      )
+    `);
 
-    // Insert data if table is empty
-    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM dogs');
-    if (rows[0].count === 0) {
+    // Seed data
+    const [walkerRows] = await db.execute('SELECT COUNT(*) AS count FROM Walkers');
+    if (walkerRows[0].count === 0) {
+      await db.execute(`INSERT INTO Walkers (walker_username) VALUES ('bobwalker'), ('newwalker')`);
+    }
+
+    const [dogRows] = await db.execute('SELECT COUNT(*) AS count FROM Dogs');
+    if (dogRows[0].count === 0) {
       await db.execute(`
-        INSERT INTO dogs (dog_name, size, owner_username) VALUES
+        INSERT INTO Dogs (dog_name, size, owner_username) VALUES
         ('Max', 'medium', 'alice123'),
         ('Bella', 'small', 'carol123'),
         ('Rocky', 'large', 'jason123'),
         ('Luna', 'medium', 'symba123'),
-        ('Daisy', 'small', 'kate123'),
+        ('Daisy', 'small', 'kate123')
       `);
-
-
-      await db.execute(`
-        INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
-        ((SELECT dog_id FROM Dogs WHERE name = 'Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
-        ((SELECT dog_id FROM Dogs WHERE name = 'Bella'), '2025-06-10 09:30:00', 45, 'Beachside Ave', 'accepted'),
-        ((SELECT dog_id FROM Dogs WHERE name = 'Rocky'), '2025-06-11 10:00:00', 60, 'City Park', 'open'),
-        ((SELECT dog_id FROM Dogs WHERE name = 'Luna'), '2025-06-12 11:15:00', 20, 'Riverside', 'completed'),
-        ((SELECT dog_id FROM Dogs WHERE name = 'Daisy'), '2025-06-13 07:45:00', 50, 'Hilltop Trail', 'cancelled')
-    `);
-
     }
+
+    const [requestRows] = await db.execute('SELECT COUNT(*) AS count FROM WalkRequests');
+    if (requestRows[0].count === 0) {
+      await db.execute(`
+        INSERT INTO WalkRequests (dog_name, requested_time, duration_minutes, location, owner_username, walker_username, status) VALUES
+        ('Max', '2025-06-10 08:00:00', 30, 'Parklands', 'alice123', 'bobwalker', 'completed'),
+        ('Bella', '2025-06-10 09:30:00', 45, 'Beachside Ave', 'carol123', 'bobwalker', 'completed'),
+        ('Rocky', '2025-06-11 07:15:00', 60, 'Lake View', 'jason123', NULL, 'open'),
+        ('Luna', '2025-06-11 10:00:00', 30, 'Central Park', 'symba123', NULL, 'open'),
+        ('Daisy', '2025-06-12 11:00:00', 30, 'High Street', 'kate123', NULL, 'open')
+      `);
+    }
+
+    const [ratingRows] = await db.execute('SELECT COUNT(*) AS count FROM WalkRatings');
+    if (ratingRows[0].count === 0) {
+      await db.execute(`
+        INSERT INTO WalkRatings (walker_username, rating, request_id) VALUES
+        ('bobwalker', 5, 1),
+        ('bobwalker', 4, 2)
+      `);
+    }
+
+    console.log('Database initialized');
   } catch (err) {
-    console.error('Error setting up database. Ensure Mysql is running: service mysql start', err);
+    console.error('DB setup failed:', err);
   }
 })();
 
+// Routes
 app.get('/api/dogs', async (req, res) => {
   try {
-    const [dogs] = await db.execute(`
-      SELECT d.name AS dog_name, d.size, u.username AS owner_username
-      FROM Dogs d
-      JOIN Users u ON d.owner_id = u.user_id
-    `);
-    res.json(dogs);
+    const [rows] = await db.execute('SELECT dog_name, size, owner_username FROM Dogs');
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch dogs' });
   }
@@ -102,15 +133,12 @@ app.get('/api/dogs', async (req, res) => {
 
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
-    const [requests] = await db.execute(`
-      SELECT wr.request_id, d.name AS dog_name, wr.requested_time,
-             wr.duration_minutes, wr.location, u.username AS owner_username
-      FROM WalkRequests wr
-      JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-      WHERE wr.status = 'open'
+    const [rows] = await db.execute(`
+      SELECT request_id, dog_name, requested_time, duration_minutes, location, owner_username
+      FROM WalkRequests
+      WHERE status = 'open'
     `);
-    res.json(requests);
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch open walk requests' });
   }
@@ -118,25 +146,20 @@ app.get('/api/walkrequests/open', async (req, res) => {
 
 app.get('/api/walkers/summary', async (req, res) => {
   try {
-    const [summaries] = await db.execute(`
+    const [rows] = await db.execute(`
       SELECT
-        u.username AS walker_username,
+        w.walker_username,
         COUNT(r.rating_id) AS total_ratings,
         ROUND(AVG(r.rating), 1) AS average_rating,
-        (
-          SELECT COUNT(*)
-          FROM WalkRequests wr
-          JOIN WalkApplications wa ON wr.request_id = wa.request_id
-          WHERE wa.walker_id = u.user_id AND wr.status = 'completed' AND wa.status = 'accepted'
-        ) AS completed_walks
-      FROM Users u
-      LEFT JOIN WalkRatings r ON u.user_id = r.walker_id
-      WHERE u.role = 'walker'
-      GROUP BY u.user_id
+        COUNT(CASE WHEN wr.status = 'completed' THEN 1 END) AS completed_walks
+      FROM Walkers w
+      LEFT JOIN WalkRatings r ON w.walker_username = r.walker_username
+      LEFT JOIN WalkRequests wr ON wr.walker_username = w.walker_username AND wr.status = 'completed'
+      GROUP BY w.walker_username
     `);
-    res.json(summaries);
+    res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch walker summaries' });
+    res.status(500).json({ error: 'Failed to fetch walker summary' });
   }
 });
 
