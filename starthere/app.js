@@ -110,7 +110,7 @@ let db;
       await db.execute(`
         INSERT INTO WalkRatings (walker_username, rating, request_id) VALUES
         ('bobwalker', 5, 1),
-        ('newwalker', 4, 2)
+        ('bobwalker', 4, 2)
       `);
     }
 
