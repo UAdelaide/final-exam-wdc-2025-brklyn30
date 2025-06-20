@@ -14,22 +14,19 @@ router.get('/dogs', async (req, res) => {
   }
 });
 
-// GET a new walk request (from owner)
-router.get('/requests', async (req, res) => {
+
+router.post('/', async (req, res) => {
+  const { dog_id, requested_time, duration_minutes, location } = req.body;
+
   try {
-    // Example query to get walk requests related to logged-in user
-    const userId = req.session.user_id;  // or however you get current user ID
-    const [rows] = await db.query(
-      `SELECT wr.dog_id, wr.requested_id, wr.status, d.name AS dog_name
-       FROM WalkRequests wr
-       JOIN Dogs d ON wr.dog_id = d.dog_id
-       WHERE wr.walker_id = ?`,
-      [userId]
-    );
-    res.json(rows);
+    const [result] = await db.query(
+      INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location)
+      VALUES (?, ?, ?, ?)
+    , [dog_id, requested_time, duration_minutes, location]);
+
+    res.status(201).json({ message: 'Walk request created', request_id: result.insertId });
   } catch (error) {
-    console.error('Error fetching walk requests:', error);
-    res.status(500).json({ error: 'Failed to fetch walk requests' });
+    res.status(500).json({ error: 'Failed to create walk request' });
   }
 });
 
