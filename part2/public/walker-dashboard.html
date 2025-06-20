@@ -58,7 +58,7 @@
             return null;
           }
         }
-        
+
         async function loadWalkRequests() {
           try {
             const res = await fetch('/api/walks');
@@ -68,7 +68,7 @@
             error.value = err.message;
           }
         }
-
+        // Modified 
         async function applyToWalk(requestId) {
           try {
             const res = await fetch(`/api/walks/${requestId}/apply`, {
