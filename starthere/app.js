@@ -36,7 +36,7 @@ let db;
 
     // Create a table if it doesn't exist
     await db.execute(`
-      CREATE TABLE IF NOT EXISTS dogs (
+      CREATE TABLE IF NOT EXISTS  (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255),
         author VARCHAR(255)
@@ -44,10 +44,10 @@ let db;
     `);
 
     // Insert data if table is empty
-    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM dogs');
+    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM books');
     if (rows[0].count === 0) {
       await db.execute(`
-        INSERT INTO dogs (dog_name, size, owner_username) VALUES
+        INSERT INTO books (title, author) VALUES
         ('1984', 'George Orwell'),
         ('To Kill a Mockingbird', 'Harper Lee'),
         ('Brave New World', 'Aldous Huxley')
