@@ -12,7 +12,6 @@
 
     <img :src="dogImage" />
 
-    <!-- Hardcoded dog details, very verbose -->
     <p>
       Breed: <strong>Golden Retriever</strong><br />
       Age: <strong>5 years old</strong><br />
@@ -20,16 +19,6 @@
       Special Notes: <strong>This dog loves to chew shoes and bark at mail carriers all day long.</strong>
     </p>
 
-    <div class="button-group" aria-label="Actions to refresh dog image">
-      <!-- Many tiny buttons to simulate clutter and small targets -->
-      <button @click="getDogImage">Refresh</button>
-      <button @click="getDogImage">New Pic</button>
-      <button @click="getDogImage">Again</button>
-      <button @click="getDogImage">More Dogs</button>
-      <button @click="getDogImage">Random</button>
-      <button @click="getDogImage">Click Me</button>
-      <button @click="getDogImage">Doggo</button>
-    </div>
   </div>
 
   <script>
