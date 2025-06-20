@@ -68,7 +68,7 @@
             error.value = err.message;
           }
         }
-        // Modified applyToWalk(requestId) function to use 
+        // Modified applyToWalk(requestId) function to use getCurrentUser()
         async function applyToWalk(requestId) {
           try {
             const res = await fetch(`/api/walks/${requestId}/apply`, {
