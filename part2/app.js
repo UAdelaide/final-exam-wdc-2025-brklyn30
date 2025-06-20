@@ -11,7 +11,7 @@ const session = require('express-session');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
-// Parse Ur
+// Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: 'walksecret',
