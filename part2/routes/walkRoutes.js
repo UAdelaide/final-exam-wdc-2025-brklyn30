@@ -15,7 +15,7 @@ router.get('/dogs', async (req, res) => {
 });
 
 // POST a new walk request (from owner)
-router.post('/', async (req, res) => {
+router.post('/requests', async (req, res) => {
   const { dog_id, requested_time, duration_minutes, location } = req.body;
 
   try {
