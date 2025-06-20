@@ -121,7 +121,6 @@ let db;
   }
 })();
 
-// Routes
 app.get('/api/dogs', async (req, res) => {
   try {
     const [rows] = await db.execute('SELECT dog_name, size, owner_username FROM Dogs');
