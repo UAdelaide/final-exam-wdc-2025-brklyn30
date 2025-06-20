@@ -45,7 +45,7 @@ let db;
 
     await db.execute(`
       CREATE TABLE IF NOT EXISTS dogs (
-        id INT AUTO_INCREMENT PRIMARY KEY,
+        dog_name INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255),
         author VARCHAR(255)
       )
