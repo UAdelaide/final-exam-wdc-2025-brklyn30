@@ -53,7 +53,7 @@ let db;
     await db.execute(`
       CREATE TABLE IF NOT EXISTS WalkRequests (
         request_id INT AUTO_INCREMENT PRIMARY KEY,
-        dog_name VARCHAR(255),
+        dog_name VARCHAR(255)x,
         owner_username VARCHAR(255)
       )
     `);
