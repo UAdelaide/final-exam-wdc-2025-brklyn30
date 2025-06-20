@@ -97,7 +97,18 @@
           }
         }
 
-        // adding dog 
+        // adding dog data and fetch call
+        const dogs = ref([]);
+
+        async function loadDogs() {
+          try {
+            const res = await fetch('/api/walks/dogs');
+            dogs.value = await res.json();
+          } catch (err) {
+            error.value = 'Failed to load your dogs';
+          }
+        }
+
 
         async function submitWalkRequest() {
           try {
