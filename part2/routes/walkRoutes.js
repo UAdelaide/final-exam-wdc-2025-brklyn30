@@ -5,7 +5,7 @@ const db = require('../models/db');
 // GET all dogs
 router.get('/dogs', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT dog_id, name, breed, size FROM Dogs');
+    const [rows] = await db.query('SELECT dog_id, owner_id, name, size FROM Dogs');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching dogs:', error);
