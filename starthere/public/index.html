@@ -7,8 +7,56 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-    
-    <h1>Express</h1>
-    <p>Welcome to Express</p>
+    <div id="app" role="main" aria-label="Dog walking service app">
+    <h1>DOG OF THE DAY!</h1>
+
+    <img :src="dogImage" />
+
+    <!-- Hardcoded dog details, very verbose -->
+    <p>
+      Breed: <strong>Golden Retriever</strong><br />
+      Age: <strong>5 years old</strong><br />
+      Favorite Activity: <strong>Chasing squirrels, barking loudly, and swimming for hours without rest.</strong><br />
+      Special Notes: <strong>This dog loves to chew shoes and bark at mail carriers all day long.</strong>
+    </p>
+
+    <div class="button-group" aria-label="Actions to refresh dog image">
+      <!-- Many tiny buttons to simulate clutter and small targets -->
+      <button @click="getDogImage">Refresh</button>
+      <button @click="getDogImage">New Pic</button>
+      <button @click="getDogImage">Again</button>
+      <button @click="getDogImage">More Dogs</button>
+      <button @click="getDogImage">Random</button>
+      <button @click="getDogImage">Click Me</button>
+      <button @click="getDogImage">Doggo</button>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ''
+        };
+      },
+      methods: {
+        getDogImage() {
+          fetch('https://dog.ceo/api/breeds/image/random')
+            .then(response => response.json())
+            .then(data => {
+              this.dogImage = data.message;
+            })
+            .catch(() => {
+              this.dogImage = 'https://images.dog.ceo/breeds/retriever-golden/n02099601_3004.jpg'; // fallback hardcoded image
+            });
+        }
+      },
+      mounted() {
+        this.getDogImage();
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
