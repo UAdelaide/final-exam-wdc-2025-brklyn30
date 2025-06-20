@@ -47,7 +47,7 @@ let db;
     const [rows] = await db.execute('SELECT COUNT(*) AS count FROM dogs');
     if (rows[0].count === 0) {
       await db.execute(`
-        INSERT INTO dogs (dog_name, size,) VALUES
+        INSERT INTO dogs (dog_name, size, owner_username) VALUES
         ('1984', 'George Orwell'),
         ('To Kill a Mockingbird', 'Harper Lee'),
         ('Brave New World', 'Aldous Huxley')
