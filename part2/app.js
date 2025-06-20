@@ -43,12 +43,6 @@ app.post('/login', async (req, res) => {
 
     const user = rows[0];
 
-    // ✅ Compare hashed password using bcrypt
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).send('Invalid credentials');
-    }
-
     // Start session
     req.session.user = {
       user_id: user.user_id,
