@@ -61,17 +61,9 @@ let db;
         ('Bella', 'small', 'carol123'),
         ('Rocky', 'large', 'jason123'),
         ('Luna', 'medium', 'symba123'),
-        ('Daisy', 'small', '123'),
+        ('Daisy', 'small', 'kate123'),
       `);
 
-      await db.execute(`
-        INSERT INTO Dogs (owner_id, name, size) VALUES
-        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
-        ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
-        ((SELECT user_id FROM Users WHERE username = 'eveowner'), 'Rocky', 'large'),
-        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Luna', 'medium'),
-        ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Daisy', 'small')
-    `);
 
       await db.execute(`
         INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
