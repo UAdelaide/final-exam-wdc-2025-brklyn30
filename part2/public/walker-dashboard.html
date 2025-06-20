@@ -47,8 +47,18 @@
         const user = 3;
 
         // add a new function to fetch current user information
+        async function getCurrentUser() {
+          try {
+            const response = await fetch('/api/users/me');
+            if (!response.ok) throw new Error('Not logged in');
+            const user = await response.json();
+            return user;
+          } catch (err) {
+            console.error('Failed to get current user:', err);
+            return null;
+          }
+        }
         
-
         async function loadWalkRequests() {
           try {
             const res = await fetch('/api/walks');
