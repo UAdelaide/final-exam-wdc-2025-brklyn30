@@ -42,6 +42,7 @@ let db;
     //     author VARCHAR(255)
     //   )
     // `);
+    
 
     // Insert data if table is empty
     const [rows] = await db.execute('SELECT COUNT(*) AS count FROM Users');
