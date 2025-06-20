@@ -54,5 +54,7 @@ app.post('/login', (req, res) => {
   }
 });
 
+//logout 
+
 // Export the app instead of listening here
 module.exports = app;
