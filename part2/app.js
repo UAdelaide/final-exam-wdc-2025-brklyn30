@@ -44,9 +44,9 @@ app.post('/login', async (req, res) => {
     const user = rows[0];
 
     // Simple plain-text password check:
-    if (user.password_hash !== password) {
-      return res.status(401).send('Invalid credentials');
-}
+    if (user.password_hash !== password) {
+      return res.status(401).send('Invalid credentials');
+    }
 
     // Start session
     req.session.user = {
