@@ -109,6 +109,21 @@
           }
         }
 
+        async function loadWalkRequests() {
+  try {
+    const res = await fetch('/api/walks');
+    console.log('Walk requests response status:', res.status);
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+    const data = await res.json();
+    console.log('Walk requests data:', data);
+    walks.value = data;
+  } catch (err) {
+    error.value = 'Failed to load walk requests';
+    console.error('loadWalkRequests error:', err);
+  }
+}
+
+
 
         async function submitWalkRequest() {
           try {
