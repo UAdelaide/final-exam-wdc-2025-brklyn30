@@ -19,18 +19,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST an application to walk a dog (from walker)
 router.post('/:id/apply', async (req, res) => {
   const requestId = req.params.id;
-  const { walker_id } = req.body;
-  console.log('APPLY payload →', { requestId, walker_id });  // should show a number
+
+  // Grab the logged‑in walker’s ID from session
+  const sessionUser = req.session.user;
+  if (!sessionUser || sessionUser.role !== 'walker') {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+  const walker_id = sessionUser.user_id;
+
+  console.log('Applying to request:', requestId, 'walker_id:', walker_id);
 
   try {
+    // Insert the application, then mark the request as accepted
     await db.query(
-      `INSERT INTO WalkApplications (request_id, walker_id) VALUES (?, ?)`,
+      'INSERT INTO WalkApplications (request_id, walker_id) VALUES (?, ?)',
       [requestId, walker_id]
     );
     await db.query(
-      `UPDATE WalkRequests SET status = 'accepted' WHERE request_id = ?`,
+      'UPDATE WalkRequests SET status = \'accepted\' WHERE request_id = ?',
       [requestId]
     );
     res.status(201).json({ message: 'Application submitted' });
@@ -39,6 +48,7 @@ router.post('/:id/apply', async (req, res) => {
     res.status(500).json({ error: 'Failed to apply for walk' });
   }
 });
+
 
 
 
