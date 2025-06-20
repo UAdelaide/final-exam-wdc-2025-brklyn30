@@ -3,20 +3,14 @@ const router = express.Router();
 const db = require('../models/db');
 
 
-// GET all walk requests (used for dashboards)
-router.get('/', async (req, res) => {
+// GET all walk requests (for walkers to view)
+router.get('/dogs', async (req, res) => {
   try {
-    const [rows] = await db.query(`
-      SELECT wr.request_id, wr.dog_id, wr.requested_time, wr.duration_minutes, wr.location, wr.status,
-             d.name AS dog_name, u.username AS owner_name
-      FROM WalkRequests wr
-      JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-    `);
+    const [rows] = await db.query('SELECT dog_id, owner_id, name, size FROM Dogs');
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching walk requests:', error);
-    res.status(500).json({ error: 'Failed to fetch walk requests' });
+    console.error('Error fetching dogs:', error);
+    res.status(500).json({ error: 'Failed to fetch dogs' });
   }
 });
 
