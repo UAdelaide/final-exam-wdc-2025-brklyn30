@@ -20,7 +20,7 @@ router.get('/requests', async (req, res) => {
     // Example query to get walk requests related to logged-in user
     const userId = req.session.user_id;  // or however you get current user ID
     const [rows] = await db.query(
-      `SELECT wr.request_id, wr.dog_id, wr.status, d.name AS dog_name
+      `SELECT wr.dog_id, wr.requested_id, wr.status, d.name AS dog_name
        FROM WalkRequests wr
        JOIN Dogs d ON wr.dog_id = d.dog_id
        WHERE wr.walker_id = ?`,
