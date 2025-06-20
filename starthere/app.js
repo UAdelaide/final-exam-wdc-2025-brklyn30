@@ -58,9 +58,9 @@ let db;
       await db.execute(`
         INSERT INTO dogs (dog_name, size, owner_username) VALUES
         ('Max', 'medium', 'alice123'),
-        ('Bella', 'small', 'hashed456', 'walker'),
-        ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-        ('danwalker', 'dan@example.com', 'passdan', 'walker'),
+        ('Bella', 'small', 'carol123'),
+        ('Max', 'medium', 'alice123'),
+        ('Max', 'medium', 'alice123'),
         ('Max', 'medium', 'alice123'),
       `);
 
