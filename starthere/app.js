@@ -44,13 +44,19 @@ let db;
     // `);
 
     await db.execute(`
-      CREATE TABLE IF NOT EXISTS dogs (
+      CREATE TABLE IF NOT EXISTS Dogs (
         dog_name VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
         size VARCHAR(255),
         owner_username VARCHAR(255)
       )
     `);
-    
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS  (
+        dog_name VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
+        size VARCHAR(255),
+        owner_username VARCHAR(255)
+      )
+    `);
 
 
     // Insert data if table is empty
