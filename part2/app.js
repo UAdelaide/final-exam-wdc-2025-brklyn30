@@ -32,6 +32,7 @@ const users = [
   { username: 'walker1', password: '456', role: 'walker' }
 ];
 
+// Login route to authenticate user and start session
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const user = users.find(u => u.username === username && u.password === password);
