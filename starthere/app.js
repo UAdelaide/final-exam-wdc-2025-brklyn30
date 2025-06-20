@@ -51,8 +51,8 @@ let db;
       )
     `);
     await db.execute(`
-      CREATE TABLE IF NOT EXISTS  (
-        dog_name VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
+      CREATE TABLE IF NOT EXISTS WalkRequests (
+        request_id VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
         size VARCHAR(255),
         owner_username VARCHAR(255)
       )
