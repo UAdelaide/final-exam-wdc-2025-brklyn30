@@ -26,7 +26,7 @@ const userRoutes = require('./routes/userRoutes');
 
 app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/walks/dogs', walkRoutes);
+app.use('/api/dogs', dogsRoutes);
 
 // Login Logic for login authentication
 const users = [
