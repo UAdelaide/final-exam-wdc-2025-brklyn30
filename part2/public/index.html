@@ -53,7 +53,7 @@
   <script>
   async function fetchDogs() {
     try {
-      const res = await fetch('/api/dogs');
+      const res = await fetch('/api/Dogs');
       const dogs = await res.json();
 
       const tbody = document.querySelector('#dogs-table tbody');
