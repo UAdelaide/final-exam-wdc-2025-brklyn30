@@ -60,8 +60,8 @@ let db;
         ('Max', 'medium', 'alice123'),
         ('Bella', 'small', 'carol123'),
         ('Rocky', 'large', 'jason123'),
-        ('Luna', 'medium', 'a123'),
-        ('Max', 'medium', 'alice123'),
+        ('Luna', 'medium', 'symba123'),
+        ('Daisy', 'small', '123'),
       `);
 
       await db.execute(`
