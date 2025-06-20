@@ -35,33 +35,25 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const [rows] = await db.query('SELECT user_id, username, password_hash, role FROM Users WHERE username = ?', [username]);
+    const [rows] = await db.query('SELECT * FROM Users WHERE username = ?', [username]);
 
     if (rows.length === 0) {
-      return res.status(401).send('Invalid credentials');
+      return res.status(401).send('Invalid username');
     }
 
     const user = rows[0];
 
-    // Simple plain-text password check:
+    // TEMP: Comparing plain values
     if (user.password_hash !== password) {
-      return res.status(401).send('Invalid credentials');
+      return res.status(401).send('Invalid password');
     }
 
-    req.session.user = {
-      user_id: user.user_id,
-      username: user.username,
-      role: user.role
-    };
-
-    if (user.role === 'owner') {
-      return res.redirect('/owner-dashboard.html');
-    } else {
-      return res.redirect('/walker-dashboard.html');
-    }
+    // Set session and continue
+    req.session.user = { id: user.user_id, username: user.username, role: user.role };
+    res.redirect('/dashboard');
   } catch (error) {
     console.error('Login DB error:', error);
-    return res.status(500).send('Internal Server Error');
+    res.status(500).send('Internal Server Error');
   }
 });
 
