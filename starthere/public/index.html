@@ -10,6 +10,16 @@
     <div id="app" role="main" aria-label="Dog walking service app">
     <h1>DOG OF THE DAY!</h1>
     <img :src="dogImage" />
+    <div class="button-group" aria-label="Actions to refresh dog image">
+      <!-- Many tiny buttons to simulate clutter and small targets -->
+      <button @click="getDogImage">Refresh</button>
+      <button @click="getDogImage">New Pic</button>
+      <button @click="getDogImage">Again</button>
+      <button @click="getDogImage">More Dogs</button>
+      <button @click="getDogImage">Random</button>
+      <button @click="getDogImage">Click Me</button>
+      <button @click="getDogImage">Doggo</button>
+    </div>
   </div>
   <script>
     const { createApp } = Vue;
