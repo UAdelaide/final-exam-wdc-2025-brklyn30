@@ -35,35 +35,30 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Query DB for user with given username
     const [rows] = await db.query('SELECT * FROM Users WHERE username = ?', [username]);
 
     if (rows.length === 0) {
-      // No user found
       return res.status(401).send('Invalid credentials');
     }
 
     const user = rows[0];
 
-    // Check password matches
-    if (user.password !== password) {
+    // Simple plain-text password check:
+    if (user.password_hash !== password) {
       return res.status(401).send('Invalid credentials');
     }
 
-    // Set session user data
     req.session.user = {
       user_id: user.user_id,
       username: user.username,
       role: user.role
     };
 
-    // Redirect based on role
     if (user.role === 'owner') {
       return res.redirect('/owner-dashboard.html');
     } else {
       return res.redirect('/walker-dashboard.html');
     }
-
   } catch (error) {
     console.error('Login DB error:', error);
     return res.status(500).send('Internal Server Error');
