@@ -47,7 +47,7 @@ let db;
       CREATE TABLE IF NOT EXISTS dogs (
         dog_name VARCHAR(255) AUTO_INCREMENT PRIMARY KEY,
         size VARCHAR(255),
-        author VARCHAR(255)
+        owner_username VARCHAR(255)
       )
     `);
 
