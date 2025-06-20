@@ -75,7 +75,7 @@ let db;
         request_id INT
       )
     `);
-    
+
     const [walkerRows] = await db.execute('SELECT COUNT(*) AS count FROM Walkers');
     if (walkerRows[0].count === 0) {
       await db.execute(`INSERT INTO Walkers (walker_username) VALUES ('bobwalker'), ('newwalker')`);
@@ -110,7 +110,7 @@ let db;
       await db.execute(`
         INSERT INTO WalkRatings (walker_username, rating, request_id) VALUES
         ('bobwalker', 5, 1),
-        ('bobwalker', 4, 2)
+        ('newwalker', 4, 2)
       `);
     }
 
