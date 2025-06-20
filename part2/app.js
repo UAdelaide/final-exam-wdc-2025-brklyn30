@@ -45,8 +45,8 @@ app.post('/login', async (req, res) => {
 
     // Simple plain-text password check:
     if (user.password_hash !== password) {
-      return res.status(401).send('Invalid credentials');
-    }
+  return res.status(401).send('Invalid credentials');
+}
 
     // Start session
     req.session.user = {
