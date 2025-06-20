@@ -26,7 +26,7 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
 
-// Login Logic
+// Login Logic for login authentication
 const users = [
   { username: 'owner1', password: '123', role: 'owner' },
   { username: 'walker1', password: '456', role: 'walker' }
