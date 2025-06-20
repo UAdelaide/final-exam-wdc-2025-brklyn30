@@ -35,7 +35,7 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const [users] = await db.query('SELECT user_id, username, password_hash, role FROM Users WHERE username = ?', [username]);
+    const [rows] = await db.query('SELECT user_id, username, password_hash, role FROM Users WHERE username = ?', [username]);
 
     if (rows.length === 0) {
       return res.status(401).send('Invalid credentials');
