@@ -28,10 +28,10 @@ app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
 
 // Login Logic for login authentication
-// const users = [
-//   { username: 'owner1', password: '123', role: 'owner' },
-//   { username: 'walker1', password: '456', role: 'walker' }
-// ];
+const users = [
+  { username: 'owner1', password: '123', role: 'owner' },
+  { username: 'walker1', password: '456', role: 'walker' }
+];
 
 // Login route to authenticate user and start session
 app.post('/login', (req, res) => {
