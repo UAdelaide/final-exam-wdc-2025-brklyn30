@@ -31,7 +31,7 @@ app.use('/api/dogs', dogRoutes);
 
 
 // Login route to authenticate user and start session
-app.get('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
