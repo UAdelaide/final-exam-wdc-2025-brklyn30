@@ -59,7 +59,7 @@ let db;
         INSERT INTO dogs (dog_name, size, owner_username) VALUES
         ('Max', 'medium', 'alice123'),
         ('Bella', 'small', 'carol123'),
-        ('Max', 'medium', 'alice123'),
+        ('Max', 'Rocky', ''),
         ('Max', 'medium', 'alice123'),
         ('Max', 'medium', 'alice123'),
       `);
