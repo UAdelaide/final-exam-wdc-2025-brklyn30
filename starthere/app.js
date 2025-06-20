@@ -61,7 +61,7 @@ let db;
         ('Bella', 'small', 'hashed456', 'walker'),
         ('carol123', 'carol@example.com', 'hashed789', 'owner'),
         ('danwalker', 'dan@example.com', 'passdan', 'walker'),
-        ('eveowner', 'eve@example.com', 'passeve', 'owner')
+        ('Max', 'medium', 'alice123'),
       `);
 
       await db.execute(`
