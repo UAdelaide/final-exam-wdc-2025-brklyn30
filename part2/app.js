@@ -54,7 +54,16 @@ app.post('/login', (req, res) => {
   }
 });
 
-//logout 
+//logout session
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).send('Logout failed');
+    }
+    res.clearCookie('connect.sid'); // clears session cookie
+    res.redirect('/'); // back to login page
+  });
+});
 
 // Export the app instead of listening here
 module.exports = app;
