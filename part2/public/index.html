@@ -13,6 +13,14 @@
     <h1 class="mb-4 text-primary">{{ message }}</h1>
     <p class="lead">Connect with trusted walkers for your beloved dog!</p>
     <!-- Adding the login form -->
+     <form method="POST" action="/login">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required />
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+            <div class="g-recaptcha" data-sitekey="6LczRD4rAAAAAAzjKepm7aE3kdL0vjAi8-yo83Am"></div>
+            <button type="submit">Login</button>
+        </form>
 
     <a href="owner-dashboard.html" class="btn btn-outline-primary me-2">Owner Dashboard</a>
     <a href="walker-dashboard.html" class="btn btn-outline-success">Walker Dashboard</a>
