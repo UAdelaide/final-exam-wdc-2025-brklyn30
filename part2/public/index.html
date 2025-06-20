@@ -49,5 +49,37 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  async function fetchDogs() {
+    try {
+      const res = await fetch('/api/dogs');
+      const dogs = await res.json();
+
+      const tbody = document.querySelector('#dogs-table tbody');
+      tbody.innerHTML = '';
+
+      for (const dog of dogs) {
+        const imageRes = await fetch('https://dog.ceo/api/breeds/image/random');
+        const imageData = await imageRes.json();
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${dog.name}</td>
+          <td>${dog.breed || 'Unknown'}</td>
+          <td>${dog.size || 'Unknown'}</td>
+          <td><img src="${imageData.message}" alt="Dog photo" style="width:100px; height:auto;"></td>
+        `;
+        tbody.appendChild(tr);
+      }
+    } catch (error) {
+      console.error('Error fetching dogs or images:', error);
+    }
+  }
+
+  // Call when page loads
+  fetchDogs();
+</script>
+
 </body>
 </html>
